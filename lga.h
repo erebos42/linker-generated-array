@@ -55,6 +55,23 @@
 #define _lga_terminator(array_name) \
 	__lga_attrib(array_name##_3)
 
+/* lga_bin_file(array_name, file_path)
+
+   is used to add a binary file as a member of a linker-generated array
+   you can retrieve the data later by using lga_get_array()
+
+   there can't be any other elements in this array
+
+   example usage:
+     lga_bin_file(image, "test.png");
+*/
+#define lga_bin_file(array_name, file_path) \
+	__asm__ (   \
+		".pushsection .lga_" #array_name "_2    \n"   \
+		".incbin " #file_path "    \n" \
+		".popsection    \n"   \
+	)
+
 /* lga_get_array(array_name)
 
    is used to get the first element of a linker-generated array
